@@ -41,7 +41,7 @@ public class OpenSlot {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("Start: ");
 		buffer.append(this.getStart());
-		buffer.append("End: ");
+		buffer.append(" End: ");
 		buffer.append(this.getEnd());
 		return buffer.toString();
 	}

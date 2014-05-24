@@ -187,7 +187,7 @@ public class ScheduleReader {
 			}
 		}
 
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm:ss");
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
 
 		Date[] time = new Date[2];
 		try {
@@ -210,7 +210,15 @@ public class ScheduleReader {
 	public static void main(String[] args) {
 		ScheduleReader xmlReader = new ScheduleReader();
 		try {
-			xmlReader.readSchedule("Schedules/schedule1.xml");
+			/*xmlReader.readSchedule("Schedules/schedule1.xml");
+			System.out.println("*****************************");
+			xmlReader.readSchedule("Schedules/schedule2.xml");
+			System.out.println("*****************************");*/
+			xmlReader.readSchedule("Schedules/schedule3.xml");
+			/*
+			System.out.println("*****************************");
+			xmlReader.readSchedule("Schedules/schedule4.xml");
+			*/
 		} catch (ScheduleXMLException e) {
 			System.out.println(e.getMessage());
 		}

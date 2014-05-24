@@ -38,7 +38,7 @@ public class Schedule {
 	}
 	
 	public void printSchedule() {
-		System.out.print("Monday: ");
+		System.out.println("Monday: ");
 		for (OpenSlot openslot : dayOpenSlotMap.get("Monday")) {
 			System.out.println(openslot.toString());
 		}		
