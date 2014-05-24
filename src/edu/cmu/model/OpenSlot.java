@@ -35,5 +35,15 @@ public class OpenSlot {
 	public void setEnd(Date end) {
 		this.end = end;
 	}
+	
+	@Override
+	public String toString() {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("Start: ");
+		buffer.append(this.getStart());
+		buffer.append("End: ");
+		buffer.append(this.getEnd());
+		return buffer.toString();
+	}
 		
 }

@@ -36,4 +36,42 @@ public class Schedule {
 		List<OpenSlot> openSlots = dayOpenSlotMap.get(day);
 		return openSlots;
 	}
+	
+	public void printSchedule() {
+		System.out.print("Monday: ");
+		for (OpenSlot openslot : dayOpenSlotMap.get("Monday")) {
+			System.out.println(openslot.toString());
+		}		
+		
+		System.out.println("Tuesday: ");
+		for (OpenSlot openslot : dayOpenSlotMap.get("Tuesday")) {
+			System.out.println(openslot.toString());
+		}
+		
+		System.out.println("Wedesday: ");
+		for (OpenSlot openslot : dayOpenSlotMap.get("Wednesday")) {
+			System.out.println(openslot.toString());
+		}
+		
+		System.out.println("Thursday: ");
+		for (OpenSlot openslot : dayOpenSlotMap.get("Thursday")) {
+			System.out.println(openslot.toString());
+		}
+		
+		System.out.println("Friday: ");
+		for (OpenSlot openslot : dayOpenSlotMap.get("Friday")) {
+			System.out.println(openslot.toString());
+		}
+		
+		System.out.println("Saturday: ");
+		for (OpenSlot openslot : dayOpenSlotMap.get("Saturday")) {
+			System.out.println(openslot.toString());
+		}
+		
+		System.out.println("Sunday: ");
+		for (OpenSlot openslot : dayOpenSlotMap.get("Sunday")) {
+			System.out.println(openslot.toString());
+		}
+		
+	}
 }

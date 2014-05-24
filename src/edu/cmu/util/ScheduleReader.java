@@ -56,8 +56,8 @@ public class ScheduleReader {
 				StartElement scheduleDoc = scheduleEvent.asStartElement();
 				if (scheduleDoc.getName().getLocalPart().equals(SCHEDULE)) {
 					schedule = new Schedule();		
-					readDaySchedule(eventReader, MONDAY, schedule.getDayOpenSlotMap().get(MONDAY));					
-					readDaySchedule(eventReader, TUESDAY, schedule.getDayOpenSlotMap().get(TUESDAY));
+					Map<String, List<OpenSlot>> scheduleMap = schedule.getDayOpenSlotMap();
+					readDaySchedule(eventReader, scheduleMap);										
 				} else {
 					throw new ScheduleXMLException();
 				}
@@ -86,34 +86,73 @@ public class ScheduleReader {
 
 		}
 
+		schedule.printSchedule();
 		return schedule;
 	}
 
-	private void readDaySchedule(XMLEventReader eventReader,  String day,
-			List<OpenSlot> openSlots) throws XMLStreamException {
-		XMLEvent scheduleEvent = eventReader.peek();
-		while (!scheduleEvent.isStartElement() || !scheduleEvent.asStartElement().getName().getLocalPart()
-				.equals(day)) {
-			scheduleEvent = getNextOpenTag(eventReader);
-			System.out.println("Moving to next tag");
-		}
-		System.out.println("found" + scheduleEvent.asStartElement().getName().getLocalPart());
-		//call to read openslots
-
+	private void readDaySchedule(XMLEventReader eventReader, Map<String, List<OpenSlot>> scheduleMap) throws XMLStreamException {
+		while(eventReader.hasNext()){
+			XMLEvent event = eventReader.nextEvent();
+			if(event.isStartElement()){
+				StartElement startElement = event.asStartElement();
+				String day = startElement.getName().getLocalPart();
+				List<OpenSlot> openSlots;
+				switch (day) {
+				case MONDAY:							
+					openSlots = scheduleMap.get(MONDAY);
+					readOpenSlots(eventReader, openSlots, MONDAY);
+					break;
+				case TUESDAY:
+					openSlots = scheduleMap.get(TUESDAY);
+					readOpenSlots(eventReader, openSlots, TUESDAY);
+					break;
+				case WEDNESDAY:
+					openSlots = scheduleMap.get(WEDNESDAY);
+					readOpenSlots(eventReader, openSlots, WEDNESDAY);
+					break;
+				case THURSDAY:
+					openSlots = scheduleMap.get(THURSDAY);
+					readOpenSlots(eventReader, openSlots, THURSDAY);
+					break;
+				case FRIDAY:
+					openSlots = scheduleMap.get(FRIDAY);
+					readOpenSlots(eventReader, openSlots, FRIDAY);
+					break;
+				case SATURDAY:
+					openSlots = scheduleMap.get(SATURDAY);
+					readOpenSlots(eventReader, openSlots, SATURDAY);
+					break;
+				case SUNDAY:
+					openSlots = scheduleMap.get(SUNDAY);
+					readOpenSlots(eventReader, openSlots, SUNDAY);
+					break;
+				default:
+					break;
+				}
+			}
+			
+		}			
+		
+	
 	}
 
-	private List<OpenSlot> readOpenSlots(XMLEventReader eventReader)
-			throws XMLStreamException {
-		List<OpenSlot> openSlots = new ArrayList<>();
-		XMLEvent event = eventReader.nextTag();
-		if (event.isStartElement()) {
-			StartElement startElement = event.asStartElement();
-			if (startElement.getName().getLocalPart().equals(OPENSLOT)) {
-				Date[] startEnd = readStartEndTime(eventReader);
-				OpenSlot openSlot = new OpenSlot(startEnd[0], startEnd[1]);
-				openSlots.add(openSlot);
-			}
+	private List<OpenSlot> readOpenSlots(XMLEventReader eventReader, List<OpenSlot> openSlots, String day)
+			throws XMLStreamException {		
+		
+		XMLEvent openSlotTag = eventReader.nextTag();
+		int i = 0;
+		while(!openSlotTag.isEndElement() || !openSlotTag.asEndElement().getName().getLocalPart().equals(day)){		
+			if (openSlotTag.isStartElement()) {
+				StartElement startElement = openSlotTag.asStartElement();
+				if (startElement.getName().getLocalPart().equals(OPENSLOT)) {
+					Date[] startEnd = readStartEndTime(eventReader);
+					OpenSlot openSlot = new OpenSlot(startEnd[0], startEnd[1]);
+					openSlots.add(openSlot);
+				}
+			}			
+			openSlotTag = eventReader.nextEvent();
 		}
+
 		return openSlots;
 	}
 
@@ -162,8 +201,8 @@ public class ScheduleReader {
 	
 	private XMLEvent getNextOpenTag(XMLEventReader eventReader) throws XMLStreamException{
 		XMLEvent xmlEvent = eventReader.peek();
-		while(!xmlEvent.isStartElement()){
-			xmlEvent = eventReader.nextTag();
+		while(!xmlEvent.isStartElement()){			
+			xmlEvent = eventReader.nextEvent(); 
 		}
 		return xmlEvent;
 	} 
