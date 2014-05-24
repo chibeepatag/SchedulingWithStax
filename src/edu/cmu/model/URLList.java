@@ -9,8 +9,10 @@ package edu.cmu.model;
  */
 public class URLList {
 
+	private String url;
+	
 	public URLList(String url) {
-		// TODO Auto-generated constructor stub
+		this.url = url;
 	}
 
 	public int getNumURLs() throws Exception {

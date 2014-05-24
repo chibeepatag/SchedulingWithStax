@@ -8,7 +8,6 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +16,6 @@ import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Characters;
-import javax.xml.stream.events.StartDocument;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
@@ -62,28 +60,13 @@ public class ScheduleReader {
 					throw new ScheduleXMLException();
 				}
 			}
-
-			/*
-			 * while (eventReader.hasNext()) { XMLEvent event =
-			 * eventReader.nextTag(); if (event.isStartDocument()) { schedule =
-			 * new Schedule(); dayOpenSlotMap = schedule.getDayOpenSlotMap(); }
-			 * else { if (event.isStartElement()) { StartElement
-			 * startElementDayOfWeek = event .asStartElement(); String dayOfWeek
-			 * = startElementDayOfWeek.getName() .getLocalPart(); switch
-			 * (dayOfWeek) { case MONDAY: { List<OpenSlot> openSlots =
-			 * dayOpenSlotMap .get(MONDAY); openSlots =
-			 * readOpenSlots(eventReader); break; } case TUESDAY: {
-			 * List<OpenSlot> openSlots = dayOpenSlotMap .get(TUESDAY);
-			 * openSlots = readOpenSlots(eventReader); break; }
-			 * 
-			 * default: break; } } } }
-			 */
+		
 		} catch (FileNotFoundException fnf) {
 			System.out.print("File ");
 			System.out.print(url);
 			System.out.println(" not found.");
 		} catch (XMLStreamException xmlStream) {
-
+			xmlStream.printStackTrace();
 		}
 
 		schedule.printSchedule();
@@ -140,7 +123,7 @@ public class ScheduleReader {
 			throws XMLStreamException {		
 		
 		XMLEvent openSlotTag = eventReader.nextTag();
-		int i = 0;
+
 		while(!openSlotTag.isEndElement() || !openSlotTag.asEndElement().getName().getLocalPart().equals(day)){		
 			if (openSlotTag.isStartElement()) {
 				StartElement startElement = openSlotTag.asStartElement();
@@ -199,13 +182,6 @@ public class ScheduleReader {
 		return time;
 	}
 	
-	private XMLEvent getNextOpenTag(XMLEventReader eventReader) throws XMLStreamException{
-		XMLEvent xmlEvent = eventReader.peek();
-		while(!xmlEvent.isStartElement()){			
-			xmlEvent = eventReader.nextEvent(); 
-		}
-		return xmlEvent;
-	} 
 
 	public static void main(String[] args) {
 		ScheduleReader xmlReader = new ScheduleReader();

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/urlList"
+	xmlns:tns="http://www.example.org/urlList" elementFormDefault="qualified">
+
+	<annotation>
+		<documentation>This is the urlList XSDL document.</documentation>
+	</annotation>
+
+
+	<element name="URLList">
+		<complexType>
+			<element name="URL" type="string" minOccurs="2"></element>
+		</complexType>
+	</element>
+</schema>
