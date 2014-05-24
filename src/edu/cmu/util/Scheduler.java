@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.cmu.model.Schedule;
+import edu.cmu.model.URLList;
 
 /**
  * @author Celine Patag
@@ -22,20 +23,24 @@ public class Scheduler {
 		System.out.println(duration);
 		
 		UrlListReader urlListReader = new UrlListReader();
-		List<String> urlList = urlListReader.readScheduleUrls("Schedules/urlList.xml");
+		URLList urlList = urlListReader.readScheduleUrls("Schedules/urlList.xml");
 		
 		ScheduleReader scheduleReader = new ScheduleReader();
 		List<Schedule> schedules = new ArrayList<Schedule>();
-		for(String url : urlList){
-			try {
-				Schedule schedule = scheduleReader.readSchedule(url);
-				schedules.add(schedule);
-				CommonTimeFinder commonTimeFinder = new CommonTimeFinder();
-				String commonTime = commonTimeFinder.findCommonTime(schedules);
-				System.out.println(commonTime);
-			} catch (ScheduleXMLException e) {
-				e.printStackTrace();
-			}			
+		try {
+			for(int i = 0; i < urlList.getNumURLs(); i++){
+				try {
+					Schedule schedule = scheduleReader.readSchedule(urlList.getURL(i));
+					schedules.add(schedule);
+					CommonTimeFinder commonTimeFinder = new CommonTimeFinder();
+					String commonTime = commonTimeFinder.findCommonTime(schedules, duration);
+					System.out.println(commonTime);
+				} catch (ScheduleXMLException e) {
+					e.printStackTrace();
+				}			
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
 		
 		

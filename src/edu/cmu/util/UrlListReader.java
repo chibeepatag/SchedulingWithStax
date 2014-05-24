@@ -14,6 +14,8 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
+import edu.cmu.model.URLList;
+
 /**
  * @author Celine Patag
  *
@@ -28,8 +30,8 @@ public class UrlListReader {
 	 * @param url of the xml containing the list of schedules
 	 * @return a list of urls of the schedules
 	 */
-	public List<String> readScheduleUrls(String url){
-		List<String> urlList = new ArrayList<String>();
+	public URLList readScheduleUrls(String url){		
+		List<String> urls = new ArrayList<String>();
 		
 		try {
 			XMLInputFactory inputFactory = XMLInputFactory.newInstance();
@@ -44,7 +46,7 @@ public class UrlListReader {
 						
 						if(urlEvent.isStartElement() && urlEvent.asStartElement().getName().getLocalPart().equals(URL)){
 							urlEvent = eventReader.nextEvent();
-							urlList.add(urlEvent.asCharacters().getData());
+							urls.add(urlEvent.asCharacters().getData());
 						}
 						urlEvent = eventReader.nextEvent();
 					}
@@ -57,7 +59,7 @@ public class UrlListReader {
 			xmlStream.printStackTrace();
 		}
 		
-		
+		URLList urlList = new URLList(url, urls);
 		return urlList;
 	}
 	
