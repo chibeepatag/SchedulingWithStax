@@ -8,12 +8,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import edu.cmu.util.NoOpenSlotException;
+
 /**
  * @author Celine Patag
  *
  */
 public class Schedule {
 
+	public String name;
+	
 	private Map<String, List<OpenSlot>> dayOpenSlotMap;
 	
 	public Schedule() {
@@ -32,8 +36,11 @@ public class Schedule {
 		return dayOpenSlotMap;
 	}
 
-	public List<OpenSlot> getAvailable(String day) throws Exception{
+	public List<OpenSlot> getAvailable(String day) throws NoOpenSlotException{
 		List<OpenSlot> openSlots = dayOpenSlotMap.get(day);
+		if(openSlots.isEmpty()){
+			throw new NoOpenSlotException(day);
+		}
 		return openSlots;
 	}
 	
