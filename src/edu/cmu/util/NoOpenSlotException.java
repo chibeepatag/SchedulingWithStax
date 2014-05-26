@@ -12,6 +12,6 @@ package edu.cmu.util;
 public class NoOpenSlotException extends Exception {
 
 	public NoOpenSlotException(String day) {
-		super("There is no open slot for this day." + day);
+		super("There is no open slot for this day: " + day);
 	}
 }

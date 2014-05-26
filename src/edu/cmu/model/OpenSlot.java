@@ -3,6 +3,8 @@
  */
 package edu.cmu.model;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -37,12 +39,26 @@ public class OpenSlot {
 	}
 	
 	@Override
-	public String toString() {
+	public String toString() {		
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+		
+		
+		
+		Calendar startC = Calendar.getInstance();
+				 startC.setTime(this.start);
+		Calendar endC = Calendar.getInstance();
+				 endC.setTime(this.end);
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("Start: ");
-		buffer.append(this.getStart());
+		buffer.append(sdf.format(start));
+		//buffer.append(startC.get(Calendar.HOUR));
+		//buffer.append(":");
+		//buffer.append(startC.get(Calendar.MINUTE));
 		buffer.append(" End: ");
-		buffer.append(this.getEnd());
+		buffer.append(sdf.format(end));
+		//buffer.append(endC.get(Calendar.HOUR));
+		//buffer.append(":");
+		//buffer.append(endC.get(Calendar.MINUTE));
 		return buffer.toString();
 	}
 		

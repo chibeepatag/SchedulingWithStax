@@ -4,8 +4,10 @@
 package edu.cmu.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import edu.cmu.model.OpenSlot;
 import edu.cmu.model.Schedule;
 import edu.cmu.model.URLList;
 
@@ -44,10 +46,38 @@ public class Scheduler {
 			CommonTimeFinder commonTimeFinder = new CommonTimeFinder(duration);
 			Schedule commonTime = commonTimeFinder
 					.schedulePairingForComparison(schedules);
-			System.out.println(commonTime);
+			printAvailableTimes(commonTime);
+
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
+		}
+
+	}
+
+	private static void printAvailableTimes(Schedule commonTime)
+			throws NoOpenSlotException {
+		System.out.println("***********************************************");
+		String[] daysArray = { "Monday", "Tuesday", "Wednesday", "Thursday",
+				"Friday", "Saturday", "Sunday" };
+		for (int i = 0; i < daysArray.length; i++) {
+			String day = daysArray[i];
+			List<OpenSlot> openSlots;
+			try {
+				openSlots = commonTime.getAvailable(day);
+				if (!openSlots.isEmpty()) {
+					System.out.print("Can meet on " + day);
+					System.out
+							.println(". The following timeslots are available: ");
+					for (OpenSlot openSlot : openSlots) {
+						System.out.println(openSlot);
+					}
+				}
+
+			} catch (NoOpenSlotException e) {
+				System.out.println("This group can't meet on " + day);
+			}
+
 		}
 
 	}

@@ -72,10 +72,8 @@ public class CommonTimeFinder {
 				OpenSlot openSlot = getCommonTimeOfDay(dayOpenSlots1, dayOpenSlots2); // throw
 				if(null != openSlot){
 					schedule.getDayOpenSlotMap().get(day).add(openSlot);
-					//.getAvailable(day).add(openSlot);
 				}																
-			} catch (NoOpenSlotException e) {
-				System.out.println(sched1.getName() + " : " + sched2.getName());
+			} catch (NoOpenSlotException e) {				
 				System.out.println(e.getMessage());
 			} catch (EmptyOpenSlotException e) {
 				System.out.println(e.getMessage());
