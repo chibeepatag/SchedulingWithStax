@@ -22,7 +22,7 @@ public class Scheduler {
 	 */
 	public static void main(String[] args) {
 		int duration = Integer.parseInt(args[0]);
-		System.out.println(duration);
+		System.out.println("Meeting duration: " + duration);
 
 		UrlListReader urlListReader = new UrlListReader();
 		URLList urlList = urlListReader

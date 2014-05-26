@@ -2,8 +2,7 @@
 <URLList 
     xmlns="http://www.w3.org/2001/XMLSchema"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
-    xsi:schemaLocation="urlList.xsd"
->
+    xsi:schemaLocation="urlList.xsd">
      <URL>Schedules/schedule1.xml</URL>  
      <URL>Schedules/schedule2.xml</URL>
      <URL>Schedules/schedule3.xml</URL>  

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>   <!-- urlList.xsd -->
+<schema 
+   xmlns="http://www.w3.org/2001/XMLSchema"
+   xmlns:co="http://www.andrew.cmu.edu/mm6"
+   targetNamespace="http://www.andrew.cmu.edu/mm6"
+   elementFormDefault="qualified"
+   >
+   <annotation>
+      <documentation>This is the schedule XSDL document. 
+      </documentation>
+   </annotation>
+   
+   <simpleType name="startType">
+       <restriction base="time"/>
+   </simpleType>
+
+   <simpleType name="endType">
+       <restriction base="time"/>
+   </simpleType>
+
+    <complexType name="intervalType">
+       <sequence>
+          <element name = "start" type="co:startType"/>
+          <element name = "end" type="co:endType"/>
+       </sequence>
+   </complexType>
+
+   <complexType name="openSlotType">
+       <sequence>
+          <element name = "openSlot"  maxOccurs= "unbounded" type="co:intervalType"/>
+       </sequence>
+   </complexType>
+
+   <complexType name="dayListType">
+       <sequence>
+          <element name = "Monday" type="co:openSlotType"/>
+          <element name = "Tuesday" type="co:openSlotType"/>
+          <element name = "Wednesday" type="co:openSlotType"/>
+          <element name = "Thursday" type="co:openSlotType"/>
+          <element name = "Friday" type="co:openSlotType"/>
+          <element name = "Saturday" type="co:openSlotType"/>
+          <element name = "Sunday" type="co:openSlotType"/>
+       </sequence>
+   </complexType>   
+   
+   <element name="schedule" type="co:dayListType"/>
+  </schema>
