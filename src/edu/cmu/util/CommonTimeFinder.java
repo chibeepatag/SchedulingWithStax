@@ -64,18 +64,21 @@ public class CommonTimeFinder {
 
 	Schedule getTimeSlotsPerDay(Schedule sched1, Schedule sched2) {
 		Schedule schedule = new Schedule();
+		schedule.setName("Combined: " + sched1.getName() + sched2.getName());
 		for (String day : daysOfTheWeek) {
 			try {
 				List<OpenSlot> dayOpenSlots1 = sched1.getAvailable(day);
 				List<OpenSlot> dayOpenSlots2 = sched2.getAvailable(day);
 				OpenSlot openSlot = getCommonTimeOfDay(dayOpenSlots1, dayOpenSlots2); // throw
 				if(null != openSlot){
-					schedule.getAvailable(day).add(openSlot);
+					schedule.getDayOpenSlotMap().get(day).add(openSlot);
+					//.getAvailable(day).add(openSlot);
 				}																
 			} catch (NoOpenSlotException e) {
+				System.out.println(sched1.getName() + " : " + sched2.getName());
 				System.out.println(e.getMessage());
 			} catch (EmptyOpenSlotException e) {
-				System.out.println("There is no open slot for " + day);
+				System.out.println(e.getMessage());
 			}
 		}
 

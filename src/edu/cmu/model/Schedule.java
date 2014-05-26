@@ -16,7 +16,7 @@ import edu.cmu.util.NoOpenSlotException;
  */
 public class Schedule {
 
-	public String name;
+	private String name;
 	
 	private Map<String, List<OpenSlot>> dayOpenSlotMap;
 	
@@ -43,7 +43,23 @@ public class Schedule {
 		}
 		return openSlots;
 	}
+		
 	
+	public String getName() {
+		return name;
+	}
+
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
+	public void setDayOpenSlotMap(Map<String, List<OpenSlot>> dayOpenSlotMap) {
+		this.dayOpenSlotMap = dayOpenSlotMap;
+	}
+
+
 	public void printSchedule() {
 		System.out.println("Monday: ");
 		for (OpenSlot openslot : dayOpenSlotMap.get("Monday")) {
