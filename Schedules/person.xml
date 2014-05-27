@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<person 
+    xmlns="tao" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+    xsi:schemaLocation="tao  person.xsd"
+>
+     <name>
+     	<firstname>Celine</firstname>
+     	<lastname>Patag</lastname>
+     </name>
+     <school>Carnegie Mellon</school>
+     <address>
+     	<street>11 Samar</street>
+     	<city>Quezon City</city>
+     </address>     
+</person>

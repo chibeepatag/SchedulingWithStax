@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:co="tao"
+	targetNamespace="tao" elementFormDefault="qualified">
+<!-- This is correct
+	<element name="person">
+		<complexType>
+			<sequence>
+				<element name="name">
+					<complexType>
+						<sequence>
+							<element name="firstname" type="string" maxOccurs="1" />
+							<element name="lastname" type="string" maxOccurs="1" />
+						</sequence>
+					</complexType>
+				</element>
+				<element name="school" type="string" />
+				<element name="address">
+					<complexType>
+						<sequence>
+							<element name="street" type="string" maxOccurs="1" />
+							<element name="city" type="string" maxOccurs="1" />
+						</sequence>
+					</complexType>
+				</element>
+			</sequence>
+		</complexType>
+	</element>
+ -->
+	<element name="person">
+		<complexType>
+			<sequence>
+				<element name="name" type="co:name" />
+				<element name="school" type="string" />
+				<element name="name" type="co:address" />
+			</sequence>
+		</complexType>
+	</element>
+
+	<element name="name">
+		<complexType>
+			<sequence>
+				<element name="firstname" type="string" maxOccurs="1" />
+				<element name="lastname" type="string" maxOccurs="1" />
+			</sequence>
+		</complexType>
+	</element>
+
+	<element name="address">
+		<complexType>
+			<sequence>
+				<element name="street" type="string" maxOccurs="1" />
+				<element name="city" type="string" maxOccurs="1" />
+			</sequence>
+		</complexType>
+	</element>
+</schema>
