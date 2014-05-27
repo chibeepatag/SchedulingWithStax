@@ -31,26 +31,26 @@
 			<sequence>
 				<element name="name" type="co:name" />
 				<element name="school" type="string" />
-				<element name="name" type="co:address" />
+				<element name="address" type="co:address" />
 			</sequence>
 		</complexType>
 	</element>
 
-	<element name="name">
-		<complexType>
+	
+		<complexType name="name">
 			<sequence>
 				<element name="firstname" type="string" maxOccurs="1" />
 				<element name="lastname" type="string" maxOccurs="1" />
 			</sequence>
 		</complexType>
-	</element>
+	
 
-	<element name="address">
-		<complexType>
+	
+		<complexType name="address">
 			<sequence>
 				<element name="street" type="string" maxOccurs="1" />
 				<element name="city" type="string" maxOccurs="1" />
 			</sequence>
 		</complexType>
-	</element>
+	
 </schema>
