@@ -1,17 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<schema xmlns="http://www.w3.org/2001/XMLSchema"
-	xmlns:co="http://www.andrew.cmu.edu/mm6"
-	targetNamespace="http://www.andrew.cmu.edu/mm6"
-	elementFormDefault="qualified">
-
-	<annotation>
-		<documentation>This is the urlList XSDL document.</documentation>
-	</annotation>
-
-
-	<element name="URLList">
-		<complexType>
-			<element name="URL" type="string" minOccurs="2"></element>
-		</complexType>
-	</element>
-</schema>
+<xs:schema
+	elementFormDefault="qualified" targetNamespace="patag"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="URLList">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="URL" type="xs:string" maxOccurs="unbounded"
+					minOccurs="2" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
