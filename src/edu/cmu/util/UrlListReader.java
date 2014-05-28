@@ -14,7 +14,10 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
+import org.xml.sax.SAXException;
+
 import edu.cmu.model.URLList;
+import edu.cmu.xml.Validate;
 
 /**
  * @author Celine Patag
@@ -30,7 +33,11 @@ public class UrlListReader {
 	 * @param url of the xml containing the list of schedules
 	 * @return a list of urls of the schedules
 	 */
-	public URLList readScheduleUrls(String url){		
+	public URLList readScheduleUrls(String url) throws SAXException{
+		
+
+		Validate.validateXML(url);
+		
 		List<String> urls = new ArrayList<String>();
 		
 		try {
@@ -65,7 +72,12 @@ public class UrlListReader {
 	
 	public static void main(String[] args) {
 		UrlListReader urlListReader = new UrlListReader();
-		urlListReader.readScheduleUrls("Schedules/urlList.xml");
+		try {
+			urlListReader.readScheduleUrls("Schedules/urlList.xml");
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

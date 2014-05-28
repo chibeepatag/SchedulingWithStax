@@ -1,6 +1,7 @@
 package edu.cmu.xml;
 
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
@@ -26,14 +27,19 @@ public class Validate extends DefaultHandler
     }
 
 
-    public static void main (String argv [])  
+    public static void main (String argv []) throws SAXException 
     {
         if (argv.length != 1) {
             System.err.println ("Usage: java Validate [filename.xml | URLToFile]");
             System.exit (1);
         }
 
-        try {
+        validateXML(argv[0]);
+        System.out.println("Valid Document is " + valid);
+    }
+
+	public static void validateXML(String url) throws SAXException {
+		try {
                // get a parser
                XMLReader reader = XMLReaderFactory.createXMLReader("org.apache.xerces.parsers.SAXParser");
 
@@ -43,7 +49,7 @@ public class Validate extends DefaultHandler
                reader.setErrorHandler(new Validate());
              
                // associate an InputSource object with the file name or URL
-               InputSource inputSource = new InputSource(argv[0]);
+               InputSource inputSource = new InputSource(url);
 
                // go ahead and parse
                reader.parse(inputSource);
@@ -51,12 +57,12 @@ public class Validate extends DefaultHandler
         catch(org.xml.sax.SAXException e) {
               System.out.println("Error in parsing " + e);
               valid = false;
+              throw e;
               
         }
         catch(java.io.IOException e) {
               System.out.println("Error in I/O " + e);
               System.exit(0);
         }
-        System.out.println("Valid Document is " + valid);
-    }
+	}
 }

@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.xml.sax.SAXException;
+
 import edu.cmu.model.OpenSlot;
 import edu.cmu.model.Schedule;
 import edu.cmu.model.URLList;
@@ -25,34 +27,40 @@ public class Scheduler {
 		System.out.println("Meeting duration: " + duration);
 
 		UrlListReader urlListReader = new UrlListReader();
-		URLList urlList = urlListReader
-				.readScheduleUrls("Schedules/urlList.xml");
-
-		ScheduleReader scheduleReader = new ScheduleReader();
-		List<Schedule> schedules = new ArrayList<Schedule>();
+		URLList urlList;
 		try {
-			for (int i = 0; i < urlList.getNumURLs(); i++) {
-				try {
-					System.out.println("Schedule: " + i);
-					Schedule schedule = scheduleReader.readSchedule(urlList
-							.getURL(i));
-					schedule.setName("Schedule: " + i);
-					schedules.add(schedule);
+			urlList = urlListReader
+					.readScheduleUrls("Schedules/urlList.xml");
+			ScheduleReader scheduleReader = new ScheduleReader();
+			List<Schedule> schedules = new ArrayList<Schedule>();
+			try {
+				for (int i = 0; i < urlList.getNumURLs(); i++) {
+					try {
+						System.out.println("Schedule: " + i);
+						Schedule schedule = scheduleReader.readSchedule(urlList
+								.getURL(i));
+						schedule.setName("Schedule: " + i);
+						schedules.add(schedule);
 
-				} catch (ScheduleXMLException e) {
-					e.printStackTrace();
+					} catch (ScheduleXMLException e) {
+						e.printStackTrace();
+					}
 				}
-			}
-			CommonTimeFinder commonTimeFinder = new CommonTimeFinder(duration);
-			Schedule commonTime = commonTimeFinder
-					.schedulePairingForComparison(schedules);
-			printAvailableTimes(commonTime);
+				CommonTimeFinder commonTimeFinder = new CommonTimeFinder(duration);
+				Schedule commonTime = commonTimeFinder
+						.schedulePairingForComparison(schedules);
+				printAvailableTimes(commonTime);
 
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			e.printStackTrace();
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+				e.printStackTrace();
+			}
+
+		} catch (SAXException e1) {
+			System.out.println("Schedules/urlList.xml is invalid.");
 		}
 
+		
 	}
 
 	private static void printAvailableTimes(Schedule commonTime)

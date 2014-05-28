@@ -4,8 +4,9 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
     xsi:schemaLocation="patag  urlList.xsd"
 >
-     <URL>Schedules/schedule1.xml</URL>  
+     <URL>Schedules/schedule1.xml
      <URL>Schedules/schedule2.xml</URL>
      <URL>Schedules/schedule3.xml</URL>  
      <URL>Schedules/schedule4.xml</URL>
+     <someinValidTag>sdksdsds</someinValidTag>
 </URLList>
