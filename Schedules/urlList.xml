@@ -4,8 +4,8 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
     xsi:schemaLocation="patag  urlList.xsd"
 >
-     <URL>http://www.andrew.cmu.edu/~mm6/95-702/McCarthysSchedule/schedule1.xml</URL>  
-     <URL>http://www.andrew.cmu.edu/~mm6/95-702/McCarthysSchedule/schedule2.xml</URL>
-     <URL>http://www.andrew.cmu.edu/~mm6/95-702/McCarthysSchedule/schedule3.xml</URL>  
-     <URL>http://www.andrew.cmu.edu/~mm6/95-702/McCarthysSchedule/schedule4.xml</URL>
+     <URL>Schedules/schedule1.xml</URL>  
+     <URL>Schedules/schedule2.xml</URL>
+     <URL>Schedules/schedule3.xml</URL>  
+     <URL>Schedules/schedule4.xml</URL>
 </URLList>
