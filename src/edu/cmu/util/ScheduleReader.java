@@ -5,7 +5,10 @@ package edu.cmu.util;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.nio.charset.MalformedInputException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -47,7 +50,7 @@ public class ScheduleReader {
 			// First, create a new XMLInputFactory
 			XMLInputFactory inputFactory = XMLInputFactory.newInstance();
 			// Setup a new eventReader
-			InputStream in = new FileInputStream(url);
+			InputStream in = new URL(url).openStream();//new FileInputStream(url);
 			XMLEventReader eventReader = inputFactory.createXMLEventReader(in);
 			XMLEvent scheduleEvent = eventReader.nextTag();
 			if (scheduleEvent.isStartElement()) {
@@ -67,6 +70,10 @@ public class ScheduleReader {
 			System.out.println(" not found.");
 		} catch (XMLStreamException xmlStream) {
 			xmlStream.printStackTrace();
+		}catch (MalformedInputException mie){
+			mie.printStackTrace();
+		}catch (IOException ioe) {
+			ioe.printStackTrace();
 		}
 
 		schedule.printSchedule();
