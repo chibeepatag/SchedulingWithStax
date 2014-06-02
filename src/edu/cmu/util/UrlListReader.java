@@ -21,37 +21,49 @@ import edu.cmu.xml.Validate;
 
 /**
  * @author Celine Patag
- *
+ * 
  */
 public class UrlListReader {
 
-	static final String URLLIST = "URLList";
-	static final String URL = "URL";
 	/**
-	 * This method reads the urlList.xml and produces a list
-	 * of urls of the schedules.
-	 * @param url of the xml containing the list of schedules
+	 * This string is the name of the start and end tag of the urlList.xml
+	 */
+	static final String URLLIST = "URLList";
+
+	/**
+	 * This string is the name of tag representing a url entry.
+	 */
+	static final String URL = "URL";
+
+	/**
+	 * This method reads the urlList.xml and produces a list of urls of the
+	 * schedules.
+	 * 
+	 * @param url
+	 *            of the xml containing the list of schedules
 	 * @return a list of urls of the schedules
 	 */
-	public URLList readScheduleUrls(String url) throws SAXException{
-		
+	public URLList readScheduleUrls(String url) throws SAXException {
 
 		Validate.validateXML(url);
-		
+
 		List<String> urls = new ArrayList<String>();
-		
+
 		try {
 			XMLInputFactory inputFactory = XMLInputFactory.newInstance();
 			InputStream in = new FileInputStream(url);
 			XMLEventReader eventReader = inputFactory.createXMLEventReader(in);
 			XMLEvent event = eventReader.nextTag();
-			if(event.isStartElement()){
-				String eventName = event.asStartElement().getName().getLocalPart();
-				if(eventName.equals(URLLIST)){
+			if (event.isStartElement()) {
+				String eventName = event.asStartElement().getName()
+						.getLocalPart();
+				if (eventName.equals(URLLIST)) {
 					XMLEvent urlEvent = eventReader.nextTag();
-					while(eventReader.hasNext()){
-						
-						if(urlEvent.isStartElement() && urlEvent.asStartElement().getName().getLocalPart().equals(URL)){
+					while (eventReader.hasNext()) {
+
+						if (urlEvent.isStartElement()
+								&& urlEvent.asStartElement().getName()
+										.getLocalPart().equals(URL)) {
 							urlEvent = eventReader.nextEvent();
 							urls.add(urlEvent.asCharacters().getData());
 						}
@@ -60,24 +72,13 @@ public class UrlListReader {
 				}
 			}
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (XMLStreamException xmlStream) {
 			xmlStream.printStackTrace();
 		}
-		
+
 		URLList urlList = new URLList(url, urls);
 		return urlList;
-	}
-	
-	public static void main(String[] args) {
-		UrlListReader urlListReader = new UrlListReader();
-		try {
-			urlListReader.readScheduleUrls("Schedules/urlList.xml");
-		} catch (SAXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 }

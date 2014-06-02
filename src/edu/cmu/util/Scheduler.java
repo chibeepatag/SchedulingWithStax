@@ -4,7 +4,6 @@
 package edu.cmu.util;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.xml.sax.SAXException;
@@ -20,7 +19,18 @@ import edu.cmu.model.URLList;
 public class Scheduler {
 
 	/**
+	 * This is the main method that runs the SchedulingWithStax application It
+	 * needs two arguments : 1. The duration of the meeting args[0] in seconds 2. Path to
+	 * the location of the urlList.xml args[1]
+	 * 
+	 * It first calls the method readScheduleUrls of the class URLListReader to
+	 * get a list of schedule locations. This url list is then used to read the
+	 * contents and the corresponding Schedule objects are created. A common
+	 * time is then found among these schedule. This is printed on the command
+	 * line.
+	 * 
 	 * @param args
+	 *            - array of command line arguments
 	 */
 	public static void main(String[] args) {
 		int duration = Integer.parseInt(args[0]);
@@ -29,8 +39,7 @@ public class Scheduler {
 		UrlListReader urlListReader = new UrlListReader();
 		URLList urlList;
 		try {
-			urlList = urlListReader
-					.readScheduleUrls("Schedules/urlList.xml");
+			urlList = urlListReader.readScheduleUrls(args[1]);
 			ScheduleReader scheduleReader = new ScheduleReader();
 			List<Schedule> schedules = new ArrayList<Schedule>();
 			try {
@@ -46,7 +55,8 @@ public class Scheduler {
 						e.printStackTrace();
 					}
 				}
-				CommonTimeFinder commonTimeFinder = new CommonTimeFinder(duration);
+				CommonTimeFinder commonTimeFinder = new CommonTimeFinder(
+						duration);
 				Schedule commonTime = commonTimeFinder
 						.schedulePairingForComparison(schedules);
 				printAvailableTimes(commonTime);
@@ -60,9 +70,17 @@ public class Scheduler {
 			System.out.println("Schedules/urlList.xml is invalid.");
 		}
 
-		
 	}
 
+	/**
+	 * This method prints the results of the application. For each day of the
+	 * resulting schedule, a common time that meets the minimum duration is
+	 * printed.
+	 * 
+	 * @param commonTime
+	 *            A schedule of options when the meeting can be set.
+	 * @throws NoOpenSlotException
+	 */
 	private static void printAvailableTimes(Schedule commonTime)
 			throws NoOpenSlotException {
 		System.out.println("***********************************************");

@@ -3,7 +3,6 @@
  */
 package edu.cmu.util;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -44,35 +43,47 @@ public class ScheduleReader {
 	static final String START = "start";
 	static final String END = "end";
 
+	/**
+	 * This method reads the schedule in the xml located in the url provided. It
+	 * logs the read schedule in the console.
+	 * 
+	 * @param url
+	 *            - location of the schedule xml
+	 * @return The schedule object contained in the xml
+	 * @throws ScheduleXMLException
+	 *             when the xml does not have the Schedule node
+	 */
 	public Schedule readSchedule(String url) throws ScheduleXMLException {
-		Schedule schedule = null;		
+		Schedule schedule = null;
 		try {
 			// First, create a new XMLInputFactory
 			XMLInputFactory inputFactory = XMLInputFactory.newInstance();
 			// Setup a new eventReader
-			InputStream in = new URL(url).openStream();//new FileInputStream(url);
+			InputStream in = new URL(url).openStream();// new
+														// FileInputStream(url);
 			XMLEventReader eventReader = inputFactory.createXMLEventReader(in);
 			XMLEvent scheduleEvent = eventReader.nextTag();
 			if (scheduleEvent.isStartElement()) {
 				StartElement scheduleDoc = scheduleEvent.asStartElement();
 				if (scheduleDoc.getName().getLocalPart().equals(SCHEDULE)) {
-					schedule = new Schedule();		
-					Map<String, List<OpenSlot>> scheduleMap = schedule.getDayOpenSlotMap();
-					readDaySchedule(eventReader, scheduleMap);										
+					schedule = new Schedule();
+					Map<String, List<OpenSlot>> scheduleMap = schedule
+							.getDayOpenSlotMap();
+					readDaySchedule(eventReader, scheduleMap);
 				} else {
 					throw new ScheduleXMLException();
 				}
 			}
-		
+
 		} catch (FileNotFoundException fnf) {
 			System.out.print("File ");
 			System.out.print(url);
 			System.out.println(" not found.");
 		} catch (XMLStreamException xmlStream) {
 			xmlStream.printStackTrace();
-		}catch (MalformedInputException mie){
+		} catch (MalformedInputException mie) {
 			mie.printStackTrace();
-		}catch (IOException ioe) {
+		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
 
@@ -80,15 +91,27 @@ public class ScheduleReader {
 		return schedule;
 	}
 
-	private void readDaySchedule(XMLEventReader eventReader, Map<String, List<OpenSlot>> scheduleMap) throws XMLStreamException {
-		while(eventReader.hasNext()){
+	/**
+	 * This method reads the part of the xml associated with each day of the
+	 * week.
+	 * 
+	 * @param eventReader
+	 *            - The event reader of the xml being read.
+	 * @param scheduleMap
+	 *            - Map of List of open slots where the key is the day of the
+	 *            week the list of open slot applies.
+	 * @throws XMLStreamException
+	 */
+	private void readDaySchedule(XMLEventReader eventReader,
+			Map<String, List<OpenSlot>> scheduleMap) throws XMLStreamException {
+		while (eventReader.hasNext()) {
 			XMLEvent event = eventReader.nextEvent();
-			if(event.isStartElement()){
+			if (event.isStartElement()) {
 				StartElement startElement = event.asStartElement();
 				String day = startElement.getName().getLocalPart();
 				List<OpenSlot> openSlots;
 				switch (day) {
-				case MONDAY:							
+				case MONDAY:
 					openSlots = scheduleMap.get(MONDAY);
 					readOpenSlots(eventReader, openSlots, MONDAY);
 					break;
@@ -120,18 +143,30 @@ public class ScheduleReader {
 					break;
 				}
 			}
-			
-		}			
-		
-	
+
+		}
+
 	}
 
-	private List<OpenSlot> readOpenSlots(XMLEventReader eventReader, List<OpenSlot> openSlots, String day)
-			throws XMLStreamException {		
-		
+	/**
+	 * This method reads the part of the xml associated with openSlots.
+	 * 
+	 * @param eventReader
+	 * @param openSlots
+	 *            - List of openslots where the read openSlot will be stored.
+	 * @param day
+	 *            - Day of the week of which the open slot should be read.
+	 * @return
+	 * @throws XMLStreamException
+	 */
+	private List<OpenSlot> readOpenSlots(XMLEventReader eventReader,
+			List<OpenSlot> openSlots, String day) throws XMLStreamException {
+
 		XMLEvent openSlotTag = eventReader.nextTag();
 
-		while(!openSlotTag.isEndElement() || !openSlotTag.asEndElement().getName().getLocalPart().equals(day)){		
+		while (!openSlotTag.isEndElement()
+				|| !openSlotTag.asEndElement().getName().getLocalPart()
+						.equals(day)) {
 			if (openSlotTag.isStartElement()) {
 				StartElement startElement = openSlotTag.asStartElement();
 				if (startElement.getName().getLocalPart().equals(OPENSLOT)) {
@@ -139,13 +174,22 @@ public class ScheduleReader {
 					OpenSlot openSlot = new OpenSlot(startEnd[0], startEnd[1]);
 					openSlots.add(openSlot);
 				}
-			}			
+			}
 			openSlotTag = eventReader.nextEvent();
 		}
 
 		return openSlots;
 	}
 
+	/**
+	 * This method reads the part of the xml associated with start and end times
+	 * of open slots.
+	 * 
+	 * @param eventReader
+	 * @return Array of Dates where the first element represents the start time of the open slot
+	 * and the second element represents the end time of the open slot.
+	 * @throws XMLStreamException
+	 */
 	private Date[] readStartEndTime(XMLEventReader eventReader)
 			throws XMLStreamException {
 		String startTime = null;
@@ -188,22 +232,5 @@ public class ScheduleReader {
 		}
 		return time;
 	}
-	
 
-	public static void main(String[] args) {
-		ScheduleReader xmlReader = new ScheduleReader();
-		try {
-			/*xmlReader.readSchedule("Schedules/schedule1.xml");
-			System.out.println("*****************************");
-			xmlReader.readSchedule("Schedules/schedule2.xml");
-			System.out.println("*****************************");*/
-			xmlReader.readSchedule("Schedules/schedule3.xml");
-			/*
-			System.out.println("*****************************");
-			xmlReader.readSchedule("Schedules/schedule4.xml");
-			*/
-		} catch (ScheduleXMLException e) {
-			System.out.println(e.getMessage());
-		}
-	}
 }

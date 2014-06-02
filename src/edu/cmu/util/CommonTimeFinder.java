@@ -35,14 +35,12 @@ public class CommonTimeFinder {
 	}
 
 	/**
-	 * This method pairs the schedule by two and calls findCommonTime to
-	 * searches a common time among the 2 given list of schedules.
+	 * This method pairs the schedule by two and calls getTimeSlotsPerDay to
+	 * read the timeslots of each day in the two schedules.
 	 * 
 	 * @param schedules
 	 *            - list of schedules to be searched.
-	 * @param durationOfMeeting
-	 *            - the minimum duration of time required to be in common among
-	 *            all schedules.
+	 * 
 	 * @return A text representation of the common time.
 	 */
 	public Schedule schedulePairingForComparison(List<Schedule> schedules) {
@@ -62,6 +60,14 @@ public class CommonTimeFinder {
 		return scheduleCombined;
 	}
 
+	/**
+	 * This method combines the two schedules by selecting only the common time
+	 * slots.
+	 * 
+	 * @param sched1
+	 * @param sched2
+	 * @return combined schedule with common timeslots of sched1 and sched2.
+	 */
 	Schedule getTimeSlotsPerDay(Schedule sched1, Schedule sched2) {
 		Schedule schedule = new Schedule();
 		schedule.setName("Combined: " + sched1.getName() + sched2.getName());
@@ -69,11 +75,12 @@ public class CommonTimeFinder {
 			try {
 				List<OpenSlot> dayOpenSlots1 = sched1.getAvailable(day);
 				List<OpenSlot> dayOpenSlots2 = sched2.getAvailable(day);
-				OpenSlot openSlot = getCommonTimeOfDay(dayOpenSlots1, dayOpenSlots2); // throw
-				if(null != openSlot){
+				OpenSlot openSlot = getCommonTimeOfDay(dayOpenSlots1,
+						dayOpenSlots2); // throw
+				if (null != openSlot) {
 					schedule.getDayOpenSlotMap().get(day).add(openSlot);
-				}																
-			} catch (NoOpenSlotException e) {				
+				}
+			} catch (NoOpenSlotException e) {
 				System.out.println(e.getMessage());
 			} catch (EmptyOpenSlotException e) {
 				System.out.println(e.getMessage());
@@ -83,12 +90,25 @@ public class CommonTimeFinder {
 		return schedule;
 	}
 
+	/**
+	 * Compares two timeslots if they are common. 1. Remove all open slots that
+	 * do not fit the required meeting duration. 2. Compare each time slots of
+	 * they coincide with the time length of at least the required duration.
+	 * 
+	 * @param openSlots1
+	 * @param openSlots2
+	 * @return the first time slot encountered that meets the criteria. Null is
+	 *         returned if no common time is found.
+	 * @throws EmptyOpenSlotException
+	 *             if no timeslots are left after filtering out too short
+	 *             timeslots.
+	 */
 	OpenSlot getCommonTimeOfDay(List<OpenSlot> openSlots1,
-			List<OpenSlot> openSlots2) throws EmptyOpenSlotException{
+			List<OpenSlot> openSlots2) throws EmptyOpenSlotException {
 		OpenSlot commonTime = null;
 		// check if duration fits timeslot, if not remove it.
 		removeShortOpenSlots(openSlots1);
-		removeShortOpenSlots(openSlots2);			
+		removeShortOpenSlots(openSlots2);
 
 		// pair each timeslot in openSlots1 with openSlots 2
 		outer: for (OpenSlot openSlot1 : openSlots1) {
@@ -127,8 +147,18 @@ public class CommonTimeFinder {
 		return commonTime;
 	}
 
-	boolean checkIfTimeSlotCoincides(OpenSlot openSlot1,
-			OpenSlot openSlot2) {
+	/**
+	 * Checks if the timeslots occur at the same time or if one open slot is
+	 * contained within the other. Ex. openSlot1 = 9:30 - 10:30 openSlot2 = 8:30
+	 * - 11:30 Returns true;
+	 * 
+	 * @param openSlot1
+	 * @param openSlot2
+	 * @return true if the timeslots coincide or if one is contained in the
+	 *         other.
+	 * 
+	 */
+	boolean checkIfTimeSlotCoincides(OpenSlot openSlot1, OpenSlot openSlot2) {
 		boolean result = false;
 
 		Date start1 = openSlot1.getStart();
@@ -152,7 +182,7 @@ public class CommonTimeFinder {
 				&& (end1.getTime() <= end2.getTime())) {
 			result = true;
 		}
-		
+
 		return result;
 	}
 
@@ -163,7 +193,8 @@ public class CommonTimeFinder {
 	 * @param openSlots
 	 *            - list of time slots to filter
 	 */
-	void removeShortOpenSlots(List<OpenSlot> openSlots) throws EmptyOpenSlotException{
+	void removeShortOpenSlots(List<OpenSlot> openSlots)
+			throws EmptyOpenSlotException {
 		Iterator<OpenSlot> openSlotIterator = openSlots.iterator();
 		while (openSlotIterator.hasNext()) {
 			OpenSlot openSlot = openSlotIterator.next();
@@ -171,18 +202,15 @@ public class CommonTimeFinder {
 					- openSlot.getStart().getTime();
 			slotDuration = slotDuration / 1000;
 			if (slotDuration < this.duration) {
-				System.out.println("Removed " + openSlot);
+				System.out.print("Removed " + openSlot);
+				System.out.println(" duration is " + slotDuration);
 				openSlotIterator.remove();
 			}
 		}
-		
-		if(openSlots.isEmpty()){
+
+		if (openSlots.isEmpty()) {
 			throw new EmptyOpenSlotException();
 		}
-	}
-
-	public static void main(String[] args) {
-
 	}
 
 }
