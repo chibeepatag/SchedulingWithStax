@@ -71,12 +71,14 @@ public class CommonTimeFinder {
 	Schedule getTimeSlotsPerDay(Schedule sched1, Schedule sched2) {
 		Schedule schedule = new Schedule();
 		schedule.setName("Combined: " + sched1.getName() + sched2.getName());
+		System.out.println(schedule.getName());
 		for (String day : daysOfTheWeek) {
 			try {
+				System.out.println(day);
 				List<OpenSlot> dayOpenSlots1 = sched1.getAvailable(day);
 				List<OpenSlot> dayOpenSlots2 = sched2.getAvailable(day);
 				OpenSlot openSlot = getCommonTimeOfDay(dayOpenSlots1,
-						dayOpenSlots2); // throw
+						dayOpenSlots2); 
 				if (null != openSlot) {
 					schedule.getDayOpenSlotMap().get(day).add(openSlot);
 				}
@@ -166,22 +168,15 @@ public class CommonTimeFinder {
 		Date start2 = openSlot2.getStart();
 		Date end2 = openSlot2.getEnd();
 
-		// Openslots coincide
-		if (start1.equals(start2) && end1.equals(end2)) {
+		
+		long start = Math.max(openSlot1.getStart().getTime(), openSlot2.getStart().getTime());
+		long end = Math.min(openSlot1.getEnd().getTime(), openSlot2.getEnd().getTime());
+		
+		long durationOfSlot = end - start;
+		
+		if(durationOfSlot > this.duration){
 			result = true;
-		}
-
-		// OpenSlot2 is within openslot1
-		if ((start1.getTime() <= start2.getTime())
-				&& (end1.getTime() >= end2.getTime())) {
-			result = true;
-		}
-
-		// OpenSlot1 is within openSlot2
-		if ((start1.getTime() >= start2.getTime())
-				&& (end1.getTime() <= end2.getTime())) {
-			result = true;
-		}
+		}	
 
 		return result;
 	}
