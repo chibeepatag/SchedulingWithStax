@@ -77,10 +77,10 @@ public class CommonTimeFinder {
 				System.out.println(day);
 				List<OpenSlot> dayOpenSlots1 = sched1.getAvailable(day);
 				List<OpenSlot> dayOpenSlots2 = sched2.getAvailable(day);
-				OpenSlot openSlot = getCommonTimeOfDay(dayOpenSlots1,
+				List<OpenSlot> openSlots = getCommonTimeOfDay(dayOpenSlots1,
 						dayOpenSlots2); 
-				if (null != openSlot) {
-					schedule.getDayOpenSlotMap().get(day).add(openSlot);
+				if (!openSlots.isEmpty()) {
+					schedule.getDayOpenSlotMap().get(day).addAll(openSlots);
 				}
 			} catch (NoOpenSlotException e) {
 				System.out.println(e.getMessage());
@@ -105,9 +105,9 @@ public class CommonTimeFinder {
 	 *             if no timeslots are left after filtering out too short
 	 *             timeslots.
 	 */
-	OpenSlot getCommonTimeOfDay(List<OpenSlot> openSlots1,
+	List<OpenSlot> getCommonTimeOfDay(List<OpenSlot> openSlots1,
 			List<OpenSlot> openSlots2) throws EmptyOpenSlotException {
-		OpenSlot commonTime = null;
+		List<OpenSlot> commonTimes = new ArrayList<OpenSlot>();
 		// check if duration fits timeslot, if not remove it.
 		removeShortOpenSlots(openSlots1);
 		removeShortOpenSlots(openSlots2);
@@ -139,14 +139,14 @@ public class CommonTimeFinder {
 					long foundDuration = (end.getTime() - start.getTime()) / 1000;
 
 					if (foundDuration >= this.duration) {
-						commonTime = new OpenSlot(start, end);
-						break outer;
+						OpenSlot commonTime = new OpenSlot(start, end);
+						commonTimes.add(commonTime);
 					}
 				}
 
 			}
 		}
-		return commonTime;
+		return commonTimes;
 	}
 
 	/**

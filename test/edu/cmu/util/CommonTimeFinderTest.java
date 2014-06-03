@@ -154,14 +154,14 @@ public class CommonTimeFinderTest {
 		OpenSlot openSlot5 = new OpenSlot(time4, time6);		
 		openSlots2.add(openSlot4);
 		openSlots2.add(openSlot5);
-				
+	/*			
 		try {
 			OpenSlot commonSlot = commonTimeFinder.getCommonTimeOfDay(openSlots1, openSlots2);
 			System.out.println(commonSlot);
 		} catch (EmptyOpenSlotException e) {
 			fail(e.getMessage());
 			e.printStackTrace();
-		}
+		}*/
 	}
 
 }
